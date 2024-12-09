@@ -1,0 +1,150 @@
+{% extends 'habits/base.html' %}
+{% load static %}
+
+{% block content %} 
+<div class="all_habits">
+<h2>Список моих привычек</h2>
+
+{% include 'habits/filter_buttons.html' with filter_option=filter_option archived_label="Архивные привычки" all_labels="Все привычки" %}
+
+<table class="habit_table">
+<thead>
+    <tr>
+        <th>№</th>
+        <th>Название привычки</th>
+        <th>Статус</th>
+        {% if filter_option == 'all' %}
+        <th>Частота выполнения</th>
+        <th>Календарь</th>
+        <th>В архив</th>
+        {% else %}
+        <th>Удалить</th>
+        {% endif %}
+    </tr>
+</thead>
+<tbody>
+    {% for habit in habits %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        {% if filter_option == 'archived' %}
+        <td class="restore-habit-link"><a href="{% url 'restore-habit' habit.id %}">{{habit.name }}</a></td>
+        {% else %}
+        <td>{{ habit.name }}</td>
+        {% endif %}
+        <td>{{ habit.status }}</td>
+        {% if filter_option == 'all' %}
+            <td>{{ habit.frequency }}</td>
+            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#calendarModal-{{ habit.id }}">
+                Отметить выполнение</button></td>
+
+                <div class="modal fade" id="calendarModal-{{ habit.id }}" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="calendarModalLabel">Календарь выполнения: {{ habit.name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                                <div class="modal-body">
+                                    <div id="calendar-{{ habit.id }}" class="calendar"></div> 
+                                        
+                                </div>
+                                <div class="modal-footer"> 
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        $(document).ready(function() {
+                            $('#calendarModal-{{ habit.id }}').on('shown.bs.modal', function() {
+                                const habitCreationDate = new Date('{{ habit.created_date|date:"Y-m-d" }}');
+                                const currentDate = new Date(); 
+                    
+                                if ($('#calendar-{{ habit.id }}').data('fullCalendar')) {
+                                    $('#calendar-{{ habit.id }}').fullCalendar('destroy');
+                                }
+                    
+                                $('#calendar-{{ habit.id }}').fullCalendar({
+                                    header: {
+                                        center: 'title',
+                                    },
+                                    selectable: true,
+                                    selectHelper: true,
+                                    locale: 'ru', 
+                                    firstDay: 1,
+                                    dayRender: function(date, cell) {
+                                        if (date.toDate() < habitCreationDate) {
+                                            cell.css('background-color', '#f0f0f0'); 
+                                            cell.css('pointer-events', 'none'); 
+                                        } else if (date.toDate() > currentDate) {
+                                            cell.css('background-color', '#f0f0f0'); 
+                                            cell.css('pointer-events', 'none'); 
+                                        }
+                                    },
+                                    select: function(start) {
+                                        if (start >= moment(habitCreationDate) && start <= moment(currentDate)) {
+                                            var eventData = {
+                                                title: '',
+                                                start: start,
+                                                end: start
+                                            };
+                                            $('#calendar-{{ habit.id }}').fullCalendar('renderEvent', eventData, true);
+                                            saveEventToLocalStorage('{{ habit.id }}', eventData);
+                                        }
+                                        $('#calendar-{{ habit.id }}').fullCalendar('unselect');
+                                    },
+                                    events: loadEventsFromLocalStorage('{{ habit.id }}'),
+                                    eventRender: function(event, element) {
+                                        if (event.title === '') {
+                                            element.html('✔️');
+                                        }
+                                        element.on('click', function() {
+                                            $('#calendar-{{ habit.id }}').fullCalendar('removeEvents', event._id);
+                                            removeEventFromLocalStorage('{{ habit.id }}', event); 
+                                        });
+                                    }
+                                });
+                            });
+                    
+                            function saveEventToLocalStorage(habitId, event) {
+                                let events = JSON.parse(localStorage.getItem('calendarEvents-' + habitId)) || [];
+                                events.push(event);
+                                localStorage.setItem('calendarEvents-' + habitId, JSON.stringify(events));
+                            }
+                    
+                            function loadEventsFromLocalStorage(habitId) {
+                                return JSON.parse(localStorage.getItem('calendarEvents-' + habitId)) || [];
+                            }
+                    
+                            function removeEventFromLocalStorage(habitId, event) {
+                                let events = JSON.parse(localStorage.getItem('calendarEvents-' + habitId)) || [];
+                                events = events.filter(e => e.start !== event.start.format()); 
+                                localStorage.setItem('calendarEvents-' + habitId, JSON.stringify(events));
+                            }
+                        });
+                    </script>
+                                  
+
+        <td class="archive-icon"><a href="{% url 'archive-habit' habit.id %}">
+            <img src="{% static 'habits/images/archive-icon.png' %}" alt="archive"></a></td>
+        {% else %}
+        <td class="delete-icon"><a href="{% url 'delete-habit' habit.id %}">
+            <img src="{% static 'habits/images/delete-key.png' %}" alt="delete"></a></td>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Пока нет привычек</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+    <a href="{% url 'add-habit' %}" class="button_add_habit">Добавить привычку</a>
+</div>
+
+
+
+{% endblock %}

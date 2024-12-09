@@ -1,0 +1,55 @@
+{% extends 'habits/base.html' %}
+{% load static %}
+
+{% block content %} 
+<div class="all_goals">
+<h2>Мои цели</h2>
+
+{% include 'habits/filter_buttons.html' with filter_option=filter_option archived_label="Архивные цели" all_labels="Все цели" %}
+
+<table class="goal_table">
+<thead>
+    <tr>
+        <th>№</th>
+        <th>Цель</th>
+        <th>Статус</th>
+        {% if filter_option == 'all' %}
+            <th>Прогресс</th>
+            <th>В архив</th>
+        {% else %}
+            <th>Удалить</th>
+        {% endif %}
+    </tr>
+</thead>
+<tbody>
+    {% for goal in goals %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ goal.description }}</td>
+        <td>{{ goal.status }}</td>
+        {% if filter_option == 'all' %}
+        <td>
+            <div class="progress_bar">
+            <div class="progress_bar_fill" style="width: {{ goal.get_progress_percentage|floatformat:0 }}%;">{{ goal.get_progress_percentage|floatformat:0 }}</div>
+            </div>
+        </td>
+        <td class="archive-icon"><a href="{% url 'archive-goal' goal.id %}">
+            <img src="{% static 'habits/images/archive-icon.png' %}" alt="archive"></a></td>
+            {% else %}
+            <td class="delete-icon"><a href="{% url 'delete-goal' goal.id %}">
+                <img src="{% static 'habits/images/delete-key.png' %}" alt="delete"></a></td>
+            {% endif %}
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Пока нет целей</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<a href="{% url 'add-goal' %}" class="button_add_goal">Добавить цель</a> 
+</div>
+
+
+{% endblock %}

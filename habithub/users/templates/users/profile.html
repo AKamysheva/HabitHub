@@ -1,0 +1,17 @@
+{% extends 'habits/base.html' %}
+
+{% block content %} 
+<h1>Профиль</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form_error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+        <p><label class="form_label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+        <div class="form_error">{{ f.errors }}</div>
+    {% endfor %}
+    <p class="change_password"><a href="{% url 'users:password_change' %}">Сменить пароль</a></p>
+</form>
+
+
+{% endblock %}

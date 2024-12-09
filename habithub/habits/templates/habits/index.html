@@ -1,0 +1,17 @@
+{% extends 'habits/base.html' %}
+
+
+{% block content %} 
+{% if user.is_authenticated %}
+<div class="habit_chart">
+<h2>Привычки</h2>
+    {{ habit_chart|safe }}
+</div>
+{% else %}
+<div class="perfomance">
+    HabitHub - простое и интуитивное приложение для отслеживания привычек и достижения целей.
+</div>
+{% endif %}
+
+
+{% endblock %}

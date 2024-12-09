@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+{% load habits_tags %}
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'habits/images/favicon.ico' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/ru.js"></script>
+    <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'habits/css/styles.css' %}">
+
+</head>
+<body>
+    <header>
+        <a href="" class="logo"><img src="{% static 'habits/images/logo.png' %}" alt="logotype"></a>
+    <div class="header_first">
+    <ul>
+    {% get_menu as menu_first %}
+    {% for item in menu_first %}
+        <li><a href="{% url item.url_name %}">{{ item.title }}</a></li>
+    {% endfor %}
+{% if user.is_authenticated %} 
+    <li> <a href="{% url 'users:profile' %}">{{ user.username }}</a> | 
+        <form method="post" action="{% url 'users:logout' %}" style="display:inline;"> 
+            {% csrf_token %} 
+            <button type="submit" class="logout-button">Выйти</button>
+         </form> 
+    </li>
+{% else %}
+    <li class="last"><a href="{% url 'users:login' %}">Войти</a> | <a href="{% url 'users:register' %}">Регистрация</a></li>
+{% endif %}
+    </ul> 
+    </div>
+    </header>
+    <div class="header_second">
+    <ul>
+    {% get_menu2 as menu_second %}
+    {% for item in menu_second %}
+    <li><a href="{% url item.url_name %}">{{ item.title }}</li></a>
+    {% endfor %}
+    </ul>
+    </div>
+
+    {% block content %} {% endblock %}
+
+    <footer>
+        <div class="footer_bottom">
+            &copy; HabitHub 2024 
+        </div>
+    </footer>
+</body>
+</html>

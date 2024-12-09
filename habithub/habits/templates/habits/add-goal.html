@@ -1,0 +1,16 @@
+{% extends 'habits/base.html' %}
+
+{% block content %} 
+<h1>{{ title }}</h1>
+<form action="" method="post" id="goal-form">
+    {% csrf_token %}
+    <div class="form_error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+        <p><label class="form_label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+        <div class="form_error">{{ f.errors }}</div>
+    {% endfor %}
+    <p><button type="submit">Добавить цель</button></p>
+</form>
+
+
+{% endblock %}

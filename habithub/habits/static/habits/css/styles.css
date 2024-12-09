@@ -1,0 +1,335 @@
+html, body {
+    font-family: 'CormorantGaramond-Regular';
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    color: #444;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7478E9;
+}
+header .logo img {
+    width: 140px;
+    height: auto;
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.6));
+    padding: 5px 10px 5px 10px;
+}
+header ul {
+    display: flex;
+    width: 100%;
+    padding: 5px;
+    margin-top: 20px;
+}
+.header_first {
+    display: flex;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+.header_first ul li {
+    list-style: none;
+} 
+.header_first ul li a {
+    color: aliceblue;
+    cursor: pointer;
+    text-decoration: none;
+} 
+header ul li:first-child a {
+    font-family: 'CormorantGaramond-LightItalic';
+    margin-right: auto; 
+    font-size: 70px;
+    line-height: 50px;
+}
+header ul li:last-child {
+    color: aliceblue;
+    margin-left: auto;
+    margin-right: 100px;
+    font-size: 40px;
+    line-height: 50px;
+}
+.header_second {
+    background-color: #7478e933;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #7478E9;
+}
+.header_second ul {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    padding: 10px 0px 10px 40px;
+    margin: 0;
+    list-style: none;
+}
+.header_second ul li {
+    font-size: 30px;
+}
+.header_second ul li a {
+    color: #444;
+    cursor: pointer;
+    text-decoration: none;
+}
+.header_second ul li a:hover {
+    color: #333333; 
+    text-decoration: underline;
+} 
+.perfomance {
+    font-size: 60px;
+    font-style: italic;
+    text-align: left;
+    width: 50%;
+    margin: 30px;
+    line-height: 60px;
+}
+.all_habits, .all_goals, .all_progress, .habit_chart {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+}
+.feedback {
+    margin: auto; 
+    text-align: center;
+    max-width: 500px;
+    display: flex;
+}
+h1.feedback {
+    font-weight: bold; 
+    line-height: 1.4;
+}
+p.feedback {
+    font-size: 1.5em; 
+    line-height: 1.6; 
+}
+.all_habits h2, .all_goals h2, .all_progress h2,  .habit_chart h2 {
+    font-size: 2em;
+    font-weight: normal;
+    margin-top: 30px;
+}
+.habit_table, .goal_table, .progress_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.3em;
+}
+.habit_table th, .goal_table th, .progress_table th {
+    background-color: #7478E9;
+    padding: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 100;
+    color: aliceblue;
+}
+.habit_table td, .goal_table td, .progress_table td {
+    font-size: 1em;
+    padding:  5px;
+    border: 1px solid #ddd;
+}
+.goal_table th:nth-child(1), .goal_table td:nth-child(1) { 
+    width: 10px; 
+}
+.goal_table th:nth-child(3), .goal_table td:nth-child(3) { 
+    width: 50px; 
+}
+.goal_table th:nth-child(5), .goal_table td:nth-child(5) { 
+    width: 30px; 
+}
+.delete-icon img, .archive-icon img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.restore-habit-link {
+    position: relative;
+}
+.restore-habit-link a {
+    text-decoration: underline;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+}
+.restore-habit-link::before {
+    content: 'Восстановить';
+    font-size: 0.8em;
+    font-weight: bold;
+    position: absolute;
+    background-color: #f7f7f7;
+    top: 2px; 
+    left: 50%;
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    display: none;  
+}
+.restore-habit-link:hover::before {
+    display: block;  
+}
+.button_add_habit, .button_add_goal {
+    background-color: #7478E9; 
+    color: aliceblue;
+    padding: 5px; 
+    width: 130px;
+    font-size: 1.2em;
+    border: #333333bd;
+    border-radius: 8px; 
+    box-shadow: 0px 4px 6px rgba(40, 181, 78, 0.2); 
+    transition: background-color 0.3s ease, transform 0.1s ease; 
+    margin: 40px auto;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.2em;
+}
+.button_add_habit:hover, .button_add_goal:hover {
+    background-color: #9e9ada;
+    transform: scale(1.05); 
+    text-decoration: none;
+    color: aliceblue;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3em;
+    min-height: 100vh;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+}
+h1, h2 { 
+    margin-bottom: 20px;
+    text-align: center;
+}
+p {
+    margin: 10px 0 10px 0;
+}
+.form_label, label {
+    display: inline-block;
+    font-size: 1.3em;
+    margin-left: 6px;
+}
+input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="datetime-local" i],  select, textarea {
+    cursor: text;
+    outline: none;
+    font-family: 'CormorantGaramond-Regular';
+    width: 98%; 
+    padding: 10px 0 10px 0;
+    margin: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 1.1em; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
+}
+button[type="submit"] {
+    display: flex;
+    background-color:rgb(40 181 78);
+    color: aliceblue; 
+    border: none;
+    padding: 10px 20px;
+    margin: auto;
+    font-size: 16px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+button[type="submit"]:hover {
+    background-color: rgb(1 121 110)
+}
+button:focus {
+    outline: none;
+}
+button.logout-button { 
+    display: contents;
+    font-size: 0.5em;
+    border: none;
+    cursor: pointer;
+} 
+.change_password a {
+    font-size: 1.3em;
+    color: #444;
+    margin-left: 6px;
+}
+.form_error {
+    margin: 5px 0; 
+    padding: 0;
+    color: #CC0000;
+    font-size: 1em; 
+}
+.form_error ul {
+    padding: 0;
+    margin: 0; 
+}
+.form_error ul li{
+    list-style: none;
+    margin-left: 8px;
+}
+.progress_bar { 
+    background-color: rgba(1, 121, 110, 0.15); 
+    border-radius: 50px; 
+    overflow: hidden; 
+}
+.progress_bar_fill {
+    height: 20px; 
+    background-color: rgb(40 181 78);; 
+    text-align: center; 
+    line-height: 12px; 
+}
+.filter-buttons a {
+    padding-left: 10px;
+    font-size: 1.3em;
+    color: #444;
+    float: right;
+    text-decoration: none;
+}
+.filter-buttons a.active {
+    font-weight: bold;
+}
+.fc-event {
+    background-color: white;
+    text-align: center;
+    border: none;
+}
+.fc-toolbar .fc-center  {
+    display: none;
+}
+.fc td.fc-day, .fc-row  {
+    cursor: pointer;
+}
+.btn {
+    line-height: 1.1em;
+    padding: 5px;
+}
+.btn-primary, .btn-primary.focus, .btn-primary:focus {
+    background-color: #f0f0f0;
+    color: #444;
+    border-color: #444;
+    box-shadow: none;
+}
+footer {
+    background-color: #DBDCF0;
+    width: 100%;
+    padding: 20px 0px;
+}
+.footer_bottom {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+}
+
+@font-face {
+    font-family: 'CormorantGaramond-LightItalic';
+    src: url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-LightItalic.woff2') format("woff2"),
+         url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-LightItalic.woff') format("woff"),
+         url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-LightItalic.ttf') format("TrueType");
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CormorantGaramond-Regular';
+    src: url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-Regular.woff2') format("woff2"),
+         url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-Regular.woff') format("woff"),
+         url('/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-Regular.ttf') format("TrueType");
+    font-style: normal;
+}

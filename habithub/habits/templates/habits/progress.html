@@ -1,0 +1,95 @@
+{% extends 'habits/base.html' %}
+
+{% block content %} 
+<div class="all_progress">
+<h2>Моя статистика</h2>
+
+<h3>Прогресс привычек</h3>
+<table class="progress_table">
+<thead>
+    <tr>
+        <th>Название</th>
+        <th>Прогресс</th>
+    </tr>
+</thead>
+<tbody>
+    {% for habit in habits %}
+    <tr>
+        <td>{{ habit.name }}</td>
+        <td id="calendar-marks-{{ habit.id }}"></td> 
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="2">Нет активных или завершенных привычек</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+<script>
+    $(document).ready(function() {
+        {% for habit in habits %}
+        var habitId = "{{ habit.id }}";
+        var events = loadEventsFromLocalStorage(habitId);
+        var habitCreationDate = new Date('{{ habit.created_date|date:"Y-m-d" }}');
+        var currentDate = new Date(); 
+        var totalDays = Math.ceil((currentDate - habitCreationDate) / (1000 * 60 * 60 * 24)); // Общее количество дней с даты создания до текущей даты
+        var completedDays = events.length;
+
+        var progressText = completedDays > 0 ? 
+            `Выполнено ${getDayString(completedDays)} из ${totalDays} дней` : 
+            "Нет отметок";
+        
+        $('#calendar-marks-' + habitId).html(progressText); // Обновляем текст прогресса
+        {% endfor %}
+    });
+
+    function loadEventsFromLocalStorage(habitId) {
+        return JSON.parse(localStorage.getItem('calendarEvents-' + habitId)) || [];
+    }
+
+    function getDayString(days) {
+        let lastDigit = days % 10;
+        let lastTwoDigits = days % 100;
+
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+            return `${days} дней`;
+        }
+
+        if (lastDigit === 1) {
+            return `${days} день`;
+        } else if (lastDigit >= 2 && lastDigit <= 4) {
+            return `${days} дня`;
+        } else {
+            return `${days} дней`;
+        }
+    }
+</script>
+
+
+
+</table>
+
+<h3>Прогресс целей</h3>
+<table class="progress_table">
+<thead>
+    <tr>
+        <th>Название</th>
+        <th>Прогресс</th>
+    </tr>
+</thead>
+<tbody>
+    {% for goal in goals %}
+    <tr>
+        <td>{{ goal.description }}</td>
+        <td>{{ goal.get_progress_percentage|floatformat:0 }}%</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="2">Нет активных или завершенных целей</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}
