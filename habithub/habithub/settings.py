@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 import environ
 
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'habits.apps.HabitsConfig',
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'pwa'
 ]
 
 MIDDLEWARE = [
@@ -125,6 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR, 'habithub', 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -149,3 +153,37 @@ INTERNAL_IPS = ['127.0.0.1']
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+
+
+PWA_APP_NAME = 'Tracker habits'
+PWA_APP_DESCRIPTION = "HabitHub"
+PWA_APP_THEME_COLOR = '#7478E9'
+PWA_APP_BACKGROUND_COLOR = '#f0f8ff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        'src': '/static/habits/images/logo_160px.png',
+        'sizes': '160x160'
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/habits/images/splash-640x1136.png',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'ru-RU'
+PWA_APP_SHORTCUTS = [
+    {
+        'name': 'HabitHub',
+        'url': 'http://localhost:8080',
+        'description': 'HabitHub'
+    }
+]
+PWA_APP_DEBUG_MODE = True
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'habits/static/habits/js', 'service-worker.js')
