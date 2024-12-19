@@ -21,7 +21,7 @@ class ViewsTest(TestCase):
         self.assertContains(response, 'Excercise')
 
     def test_habit_add_view(self):
-        response = self.client.post(reverse('habits:add-habit'), {'user': self.user.id, 'name': 'Медитация', 'frequency':'Каждый день'})
+        response = self.client.post(reverse('add-habit'), {'user': self.user.id, 'name': 'Медитация', 'frequency':'Каждый день'})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Habit.objects.count(), 3)
         new_habit = Habit.objects.get(name='Медитация')
@@ -29,20 +29,20 @@ class ViewsTest(TestCase):
         self.assertEqual(new_habit.user, self.user)
 
     def test_habit_archive(self):
-        response = self.client.post(reverse('habits:archive-habit'), args=[self.habit1.id])
+        response = self.client.post(reverse('archive-habit'), args=[self.habit1.id])
         self.habit1.refresh_from_db()
         self.assertEqual(self.habit1.status, Habit.Status.ARCHIVED)
         self.assertRedirects(response, '/habits/')
 
     def test_habit_delete(self):
-        response = self.client.post(reverse('habits:delete-habit'), args=[self.habit1.id])
+        response = self.client.post(reverse('delete-habit'), args=[self.habit1.id])
         self.assertFalse(Habit.objects.filter(id=self.habit1.id).exists())
         self.assertRedirects(response, '/habits/')
 
     def test_habit_restore(self):
         self.habit2.status = Habit.Status.ARCHIVED
         self.habit2.save()
-        response = self.client.post(reverse('habits:restore-habit'), args=[self.habit2.id])
+        response = self.client.post(reverse('restore-habit'), args=[self.habit2.id])
         self.habit2.refresh_from_db()
         self.assertEqual(self.habit2.status, Habit.Status.ACTIVE)
         self.assertRedirects(response, '/habits/')
