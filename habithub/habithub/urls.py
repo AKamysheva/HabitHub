@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.conf import settings
 from habits import views
 
 urlpatterns = [
@@ -31,8 +32,12 @@ urlpatterns = [
     path('progress/', views.ProgressView.as_view(), name='progress'),
     path('feedback/', views.FeedbackView.as_view(), name='feedback'),
     path('feedback/answer-feedback/', TemplateView.as_view(template_name='habits/answer_feedback.html'), name='feedback-answer'),
+    path('', include('pwa.urls')),
 ]
 
+if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+    urlpatterns += debug_toolbar_urls()
 
 admin.site.site_header = 'Панель администрирования'
 admin.site.index_title = 'HabitHub'
