@@ -37,19 +37,17 @@ class Goal(AbstractModel):
     def get_progress_percentage(self):
         total_duration = (self.target_date - self.created_date).days
         time = (timezone.now().date() - self.created_date).days
-        if total_duration == 0:
+        if total_duration <= 0:
             return 100
-        elif total_duration > 0:
+        else:
             progress = (time / total_duration) * 100
             return min(progress, 100)
-        return 0
     
     def update_status(self):
         progress = self.get_progress_percentage()
-        if progress >= 100 and not Goal.Status.ARCHIVED:
+        if progress >= 100 and self.status != Goal.Status.ARCHIVED:
             self.status = Goal.Status.COMPLETED
             self.save()
-        return progress
 
     class Meta:
         verbose_name = 'Цели'

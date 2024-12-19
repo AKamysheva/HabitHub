@@ -28,12 +28,14 @@ class AddGoalForm(forms.ModelForm):
         fields = ['habit', 'description', 'target_date']
         widgets = {
             'habit': forms.Select(attrs={}),
-            'target_date': forms.DateInput(attrs={'type': 'date'}),
+            'target_date': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['habit'].queryset = Habit.objects.filter(user=self.initial['user'])
+        user = self.initial.get('user')
+        if user:
+            self.fields['habit'].queryset = Habit.objects.filter(user=user)
 
 class FeedbackForm(forms.Form):
     feedback = forms.CharField(widget=forms.Textarea(attrs={'rows': '4', 'cols': '40', 'placeholder': 'Ваши предложения по улучшению приложения...'}), label='Обатная связь')

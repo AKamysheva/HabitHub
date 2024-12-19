@@ -1,6 +1,7 @@
 from django.test import TestCase
 from habits.models import Habit, Goal, CustomUser
 from django.urls import reverse
+from datetime import date
 
 class ViewsTest(TestCase):
     @classmethod
@@ -29,20 +30,20 @@ class ViewsTest(TestCase):
         self.assertEqual(new_habit.user, self.user)
 
     def test_habit_archive(self):
-        response = self.client.post(reverse('archive-habit'), args=[self.habit1.id])
+        response = self.client.post(reverse('archive-habit', kwargs={'habit_id': self.habit1.id}))
         self.habit1.refresh_from_db()
         self.assertEqual(self.habit1.status, Habit.Status.ARCHIVED)
         self.assertRedirects(response, '/habits/')
 
     def test_habit_delete(self):
-        response = self.client.post(reverse('delete-habit'), args=[self.habit1.id])
+        response = self.client.post(reverse('delete-habit', kwargs={'habit_id': self.habit1.id}))
         self.assertFalse(Habit.objects.filter(id=self.habit1.id).exists())
         self.assertRedirects(response, '/habits/')
 
     def test_habit_restore(self):
         self.habit2.status = Habit.Status.ARCHIVED
         self.habit2.save()
-        response = self.client.post(reverse('restore-habit'), args=[self.habit2.id])
+        response = self.client.post(reverse('restore-habit', kwargs={'habit_id': self.habit2.id}))
         self.habit2.refresh_from_db()
         self.assertEqual(self.habit2.status, Habit.Status.ACTIVE)
         self.assertRedirects(response, '/habits/')
@@ -58,12 +59,12 @@ class ViewsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Goal.objects.count(), 2)
         new_goal = Goal.objects.get(description='Test goal2')
-        self.assertEqual(new_goal.target_date, '2024-12-30') 
+        self.assertEqual(new_goal.target_date, date(2024, 12, 30))
         self.assertEqual(new_goal.user, self.user)
 
     def test_goal_delete(self):
         goal2 = Goal.objects.create(habit=self.habit1, user=self.user, description='Test goal to delete', target_date='2024-12-28')
-        response = self.client.post(reverse('delete-goal'), args=[goal2.id])
+        response = self.client.post(reverse('delete-goal', kwargs={'goal_id': goal2.id}))
         self.assertFalse(Goal.objects.filter(id=goal2.id).exists())
         self.assertRedirects(response, reverse('goals'))
 

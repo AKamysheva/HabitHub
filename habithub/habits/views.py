@@ -77,15 +77,16 @@ class AddHabit(LoginRequiredMixin, DataMixin, CreateView):
     
     def form_valid(self, form):
         post_data = self.request.POST.copy() 
-        if post_data['habit_choice'] == 'other': 
-            form.cleaned_data['name'] = post_data['custom_name'] 
-        else: 
-            form.cleaned_data['name'] = post_data['habit_choice']
-
-        if post_data['frequency_choice'] == 'other': 
-            form.cleaned_data['frequency'] = post_data['custom_frequency'] 
-        else: 
-            form.cleaned_data['frequency'] = post_data['frequency_choice']
+        if 'habit_choice' in post_data:
+            if post_data['habit_choice'] == 'other': 
+                form.cleaned_data['name'] = post_data['custom_name'] 
+            else: 
+                form.cleaned_data['name'] = post_data['habit_choice']
+        if 'frequency_choice' in post_data:
+            if post_data['frequency_choice'] == 'other': 
+                form.cleaned_data['frequency'] = post_data['custom_frequency'] 
+            else: 
+                form.cleaned_data['frequency'] = post_data['frequency_choice']
                 
         habit = form.save(commit=False)
         habit.user = self.request.user
