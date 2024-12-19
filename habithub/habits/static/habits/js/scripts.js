@@ -37,5 +37,3 @@ document.getElementById('habit-form').addEventListener('submit', function () {
     }
 });
 
-
-
