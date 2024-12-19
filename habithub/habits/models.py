@@ -23,9 +23,6 @@ class Habit(AbstractModel):
 
     def __str__(self):
         return self.name
-    
-    def get_progress(self):
-        pass
 
     class Meta:
         verbose_name = 'Привычки'
