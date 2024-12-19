@@ -1,0 +1,21 @@
+{
+    "name": "Tracker habits",
+    "short_name": "HabitHub",
+    "start_url": "/",
+    "scope": "/",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "display": "standalone",
+    "bacground_color": "#f0f8ff",
+    "theme_color": "#7478E9", 
+    "icons": [{
+        "src": "/static/habits/images/logo_512px.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
+        "src": "/static/habits/images/logo_192px.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      }
+    ]
+}
