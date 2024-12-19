@@ -69,7 +69,7 @@ class AddHabit(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lst_habits = get_lst_habits('C:/Python/Django/my_second_site/habithub/habits/static/habits/documents/список_привычек.csv')
+        lst_habits = get_lst_habits('C:/Python/Django/my_second_site/habithub/habits/static/habits/documents/lst_habits.csv')
         lst_frequancy = ['Ежедневно', '1 раз в неделю', 'Несколько раз в неделю', 'Несколько раз в месяц']
         context['lst_habits'] = lst_habits
         context['lst_frequancy'] = lst_frequancy
