@@ -1,7 +1,6 @@
 var staticCacheName = "django-pwa-v" + new Date().getTime();
 var filesToCache = [
     '/offline',
-    '/',
     '/static/habits/css/styles.css',
     '/static/habits/documents/lst_habits.csv',
     '/static/habits/fonts/Cormorant_Garamond/CormorantGaramond-LightItalic.ttf',
@@ -20,23 +19,7 @@ var filesToCache = [
     '/static/habits/images/splash-640x1136.png',
     '/static/habits/images/logo.png',
     '/static/habits/js/index.js',
-    '/static/habits/js/scripts.js',
-    '/templates/habits/base.html',
-    '/templates/habits/add-goal.html',
-    '/templates/habits/add-habit.html',
-    '/templates/habits/answer_feedback.html',
-    '/templates/habits/feedback.html',
-    '/templates/habits/filter_buttons.html',
-    '/templates/habits/goals_lst.html',
-    '/templates/habits/habits.html',
-    '/templates/habits/index.html',
-    '/templates/habits/progress.html',
-    '/templates/users/login.html',
-    '/templates/users/login.html',
-    '/templates/users/password_change_done.html',
-    '/templates/users/password_change_form.html',
-    '/templates/users/profile.html',
-    '/templates/users/register.html'
+    '/static/habits/js/scripts.js'
 ];
 
 // Cache on install
