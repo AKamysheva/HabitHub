@@ -1,21 +1,17 @@
-from django.db.models.query import QuerySet
-from django.forms import BaseModelForm
-from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from django.views.generic import ListView, CreateView, FormView
 from .models import *
-from .forms import AddHabitForm, AddGoalForm, FeedbackForm
+from .forms import AddHabitForm, AddGoalForm, FeedbackForm, ReminderForm
 from habits.utils import DataMixin, get_lst_habits
 from django.core.mail import send_mail
 import plotly.graph_objects as px
 from plotly.offline import plot
-from datetime import datetime, timedelta
-import json
-
-
+from django.core.cache import cache
+from .tasks import add_task_to_celery_beat
+from django_celery_beat.models import PeriodicTask
 
 class HomePageView(DataMixin, TemplateView):
     template_name = 'habits/index.html'
@@ -34,11 +30,10 @@ class HomePageView(DataMixin, TemplateView):
         fig = px.Figure(px.Pie(
             labels=habit_names,
             values=[1] * len(habit_names),
-            textinfo='label',
-            hoverinfo='none'
+            textinfo='label'
         ))
         fig.update_traces(textfont=dict(color="white"))
-        fig.update_layout(font=dict(family='CormorantGaramond-Regular', size=16), showlegend=False)
+        fig.update_layout(font=dict(family='CormorantGaramond-Regular', size=13), showlegend=False)
         return fig.to_html(full_html=False)
 
 class HabitsView(DataMixin, ListView):
@@ -91,6 +86,7 @@ class AddHabit(LoginRequiredMixin, DataMixin, CreateView):
         habit = form.save(commit=False)
         habit.user = self.request.user
         habit.save()
+        cache.delete(f"habit_chart_{self.request.user.id}")
         return super().form_valid(form)
 
 
@@ -193,6 +189,33 @@ class FeedbackView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         feedback = form.cleaned_data['feedback']
         email_user = self.request.user.email
-        print(email_user)
         send_mail('Обратная связь от пользователя', feedback, email_user, ['tashkina12@gmail.com'], fail_silently=False,)
         return super().form_valid(form)
+    
+class SetReminderView(LoginRequiredMixin, CreateView):
+    model = Remainders
+    form_class = ReminderForm
+    template_name = 'habits/set_reminder.html'
+    success_url = reverse_lazy('reminder-answer') 
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.is_active = True
+        form.instance.user_timezone = self.request.POST.get('timezone')
+        responce = super().form_valid(form)
+        add_task_to_celery_beat(self.object)
+        return responce
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['habit'] = self.kwargs['habit_id']
+        return kwargs
+
+
+def delete_reminder(request, reminder_id):
+    reminder = get_object_or_404(Remainders, id=reminder_id, user=request.user)
+    task_name = f'reminder_task_{reminder_id}'
+    PeriodicTask.objects.filter(name=task_name).delete()
+    reminder.delete()
+    return redirect('habits')
