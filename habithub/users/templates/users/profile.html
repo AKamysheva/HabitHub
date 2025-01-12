@@ -10,7 +10,7 @@
         <p><label class="form_label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
         <div class="form_error">{{ f.errors }}</div>
     {% endfor %}
-    <p class="change_password"><a href="{% url 'users:password_change' %}">Сменить пароль</a></p>
+    <p class="change_password"><a href="{% url 'users:password_change' %}" class="btn btn-primary">Сменить пароль</a></p>
 </form>
 
 

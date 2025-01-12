@@ -1,9 +1,6 @@
 from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
-from django.http import HttpResponse
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 from .forms import CustomUserRegisterForm, CustomUserAuthenticationForm, ProfileCustomUserForm, CustomUserChangePasswordForm
@@ -40,4 +37,3 @@ class CustomUserChangePassword(PasswordChangeView):
     form_class = CustomUserChangePasswordForm
     success_url = reverse_lazy('users:password_change_done')
     template_name = 'users/password_change_form.html'
-    
