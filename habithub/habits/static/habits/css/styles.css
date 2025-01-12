@@ -5,7 +5,9 @@ html, body {
     height: 100%;
     width: 100%;
     color: #444;
-    overflow: hidden;
+    overflow-y: auto;
+    max-height: 100vh; 
+    padding-bottom: 40px;
 }
 header {
     display: flex;
@@ -106,7 +108,18 @@ header ul li:last-child {
     margin: 30px;
     line-height: 60px;
 }
-.all_habits, .all_goals, .all_progress, .habit_chart {
+.all_habits, .all_goals, .all_progress {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 570px;
+    width: 100%;
+    margin: auto;
+    overflow-y: auto;
+    max-height: 90vh; 
+    padding-bottom: 40px;
+}
+.habit_chart {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -115,17 +128,17 @@ header ul li:last-child {
     width: 100%;
     margin: auto;
 }
-.feedback {
+.feedback, .remainder {
     margin: auto; 
     text-align: center;
     max-width: 500px;
     display: flex;
 }
-h1.feedback {
+h1.feedback, h1.remainder {
     font-weight: bold; 
     line-height: 1.4;
 }
-p.feedback {
+p.feedback, p.remainder {
     font-size: 1.5em; 
     line-height: 1.6; 
 }
@@ -144,12 +157,15 @@ p.feedback {
     padding: 5px;
     border: 1px solid #ddd;
     text-align: center;
-    font-size: 1em;
+    font-size: 0.9em;
     font-weight: 100;
     color: aliceblue;
+    word-wrap: break-word;
+    max-width: 73px;
+    line-height: 1.2em;
 }
 .habit_table td, .goal_table td, .progress_table td {
-    font-size: 1em;
+    font-size: 0.9em;
     padding:  5px;
     border: 1px solid #ddd;
 }
@@ -167,6 +183,15 @@ p.feedback {
     height: 30px;
     cursor: pointer;
     transition: transform 0.2s ease;
+}
+.status {
+    font-weight: bold;
+}
+.status.enabled {
+    color: #7478E9;
+}
+.status.disabled {
+    color: grey
 }
 .restore-habit-link {
     position: relative;
@@ -222,6 +247,7 @@ form {
     margin: auto;
 }
 h1, h2 { 
+    margin-top: 30px;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -233,7 +259,7 @@ p {
     font-size: 1.3em;
     margin-left: 6px;
 }
-input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="datetime-local" i],  select, textarea {
+input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="datetime-local" i],  select, textarea, input {
     cursor: text;
     outline: none;
     font-family: 'CormorantGaramond-Regular';
@@ -269,7 +295,7 @@ button.logout-button {
     border: none;
     cursor: pointer;
 } 
-.change_password a {
+.change_password a, .set_reminder a {
     font-size: 1.3em;
     color: #444;
     margin-left: 6px;
@@ -358,9 +384,6 @@ footer {
     font-style: normal;
 }
 @media (min-width: 360px) and (max-width: 574px) {
-    body {
-        overflow: auto;
-    }
     header .logo img {
         display: none;
     }
@@ -422,6 +445,8 @@ footer {
     }
     .habit_table th, .goal_table th, .progress_table th {
         font-size: 0.9em;
+        padding: 0;
+        max-width: 50px;
     }
     .delete-icon img, .archive-icon img {
         width: 25px;
@@ -452,7 +477,6 @@ footer {
     }
     footer {
         padding: 10px 0px;
-        position: static;
     }
 }  
 @media (min-width: 575px) and (max-width: 767px)  {
@@ -470,5 +494,11 @@ footer {
     .header_second ul {
         gap: 15px;
         padding: 15px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    header ul li:last-child {
+        font-size: 30px;
+        margin-right: 20px;
     }
 }
