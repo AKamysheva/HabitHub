@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from users.models import CustomUser
+from datetime import time
 
 
 class AbstractModel(models.Model):
@@ -23,6 +24,9 @@ class Habit(AbstractModel):
 
     def __str__(self):
         return self.name
+    
+    def has_active_reminder(self): 
+        return self.remainders.filter(is_active=True).exists()
 
     class Meta:
         verbose_name = 'Привычки'
@@ -56,10 +60,15 @@ class Goal(AbstractModel):
 
 
 class Remainders(models.Model):
+    FREQUENCY_CHOICES = [('daily', 'Ежедневно'), ('weekly', 'Еженедельно'), ('monthly', 'Ежемесячно')]
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, verbose_name='Привычка')
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, verbose_name='Цель')
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, verbose_name='Привычка', related_name='reminders')
     reminder_time = models.TimeField(blank=True, verbose_name='Время напоминания')
-    reminder_frequency = models.CharField(max_length=30, blank=True, verbose_name='Частота напоминаний')
+    reminder_frequency = models.CharField(max_length=30, choices=FREQUENCY_CHOICES, blank=True, verbose_name='Частота напоминаний')
     is_active = models.BooleanField(default=False, verbose_name='Активно')
 
+    def __str__(self): 
+        return f'{self.user.username} - {self.habit.name} - {self.reminder_time.replace(second=0, microsecond=0)}'
+
+    def display_frequency_choices(self):
+        return dict(self.FREQUENCY_CHOICES).get(self.reminder_frequency, self.reminder_frequency)
