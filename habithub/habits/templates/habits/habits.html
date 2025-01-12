@@ -17,6 +17,7 @@
         <th>Частота выполнения</th>
         <th>Календарь</th>
         <th>В архив</th>
+        <th>Напоминание</th>
         {% else %}
         <th>Удалить</th>
         {% endif %}
@@ -126,10 +127,17 @@
                             }
                         });
                     </script>
-                                  
-
+                    
+                    
         <td class="archive-icon"><a href="{% url 'archive-habit' habit.id %}">
             <img src="{% static 'habits/images/archive-icon.png' %}" alt="archive"></a></td>
+        <td class="turn-on-off">
+            {% if not habit.reminders.exists %}
+            <a href="{% url 'set-reminder' habit.id %}" class="status disabled">Выкл</a>
+            {% else %}
+            <a href="{% url 'delete-reminder' habit.reminders.first.id %}" class="status enabled">Вкл</a>
+            {% endif %}
+        </td>
         {% else %}
         <td class="delete-icon"><a href="{% url 'delete-habit' habit.id %}">
             <img src="{% static 'habits/images/delete-key.png' %}" alt="delete"></a></td>
@@ -137,7 +145,7 @@
     </tr>
     {% empty %}
     <tr>
-        <td colspan="5">Пока нет привычек</td>
+        <td colspan="6">Пока нет привычек</td>
     </tr>
     {% endfor %}
 </tbody>
