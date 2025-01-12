@@ -6,7 +6,7 @@
     {% if user.is_authenticated %}
     <div class="habit_chart">
         <h2>Привычки</h2>
-            {{ habit_chart|safe }}
+        <div id="chart">{{ habit_chart|safe }}</div>
     </div>
     {% else %}
         <div class="perfomance">
