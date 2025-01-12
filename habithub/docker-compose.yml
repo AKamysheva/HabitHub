@@ -6,11 +6,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
+
   web:
     image: habits_docker:latest
     container_name: web_django
     depends_on:
       - db
+      - redis
+      - celery
     volumes:
       - .:/app
       - static_volume:/app/static
@@ -20,6 +23,32 @@ services:
       bash -c "python manage.py collectstatic --noinput && gunicorn -b 0.0.0.0:8080 habithub.wsgi:application"
     ports:
       - "8080:8080"
+
+  redis:
+    image: "redis:alpine"
+
+  celery:
+    build: .
+    container_name: celery-worker
+    command: celery -A habithub worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    env_file:
+      - .env
+
+  celery_beat:
+    build: .
+    container_name: celery-beat
+    command: celery -A habithub beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    env_file:
+      - .env
+      
   nginx:
     build:
       dockerfile: ./Dockerfile
