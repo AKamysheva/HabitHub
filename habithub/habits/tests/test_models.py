@@ -10,8 +10,8 @@ class HabitAndGoalTestClass(TestCase):
     def setUpTestData(cls):
         cls.user = CustomUser.objects.create_user(username='testuser', password='TestPassword')
         cls.habit = Habit.objects.create(user=cls.user, name='Reading', frequency='Every day')
-        cls.goal = Goal.objects.create(habit=cls.habit, user=cls.user, description='Test goal', target_date='2024-12-31')
-        cls.goal_past = Goal.objects.create(habit=cls.habit, user=cls.user, description='Test goal past', target_date='2024-12-31', created_date=timezone.now().date() - timezone.timedelta(days=30))
+        cls.goal = Goal.objects.create(habit=cls.habit, user=cls.user, description='Test goal', target_date='2026-01-31')
+        cls.goal_past = Goal.objects.create(habit=cls.habit, user=cls.user, description='Test goal past', target_date='2026-01-31', created_date=timezone.now().date() - timezone.timedelta(days=30))
         cls.goal_future = Goal.objects.create(habit=cls.habit, user=cls.user, description='Test goal future', target_date=timezone.now().date(), created_date=timezone.now().date())
 
     def test_habit_creation(self):
@@ -23,7 +23,7 @@ class HabitAndGoalTestClass(TestCase):
     def test_goal_creation(self):
         goal = Goal.objects.get(description='Test goal')
         self.assertEqual(goal.user.username, 'testuser')
-        self.assertEqual(goal.target_date, date(2024, 12, 31))
+        self.assertEqual(goal.target_date, date(2026, 1, 31))
         self.assertEqual(goal.status, 'Активная')
     
     def test_goal_progress(self):

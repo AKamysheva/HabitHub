@@ -1,7 +1,7 @@
 from django.test import TestCase
-from habits.models import Habit, Goal, CustomUser
-from habits.forms import AddHabitForm, AddGoalForm, FeedbackForm
-from datetime import date
+from habits.models import Habit, Goal, CustomUser, Remainders
+from habits.forms import AddHabitForm, AddGoalForm, FeedbackForm, ReminderForm
+from datetime import date, time
 
 class HabitsFormsTest(TestCase):
     @classmethod
@@ -41,6 +41,16 @@ class HabitsFormsTest(TestCase):
     def test_feedback_form(self):
         feedback_form = FeedbackForm(data={'feedback': 'This is test feedback message'})
         self.assertTrue(feedback_form.is_valid())
+
+    def test_reminder_form(self):
+        reminder_form = ReminderForm(data={'habit': self.habit2.id, 'reminder_time': time(10, 0), 'reminder_frequency': 'daily'}, user=self.user, habit=self.habit2)
+        self.assertTrue(reminder_form.is_valid())
+        reminder = reminder_form.save(commit=False)
+        reminder.user = self.user
+        reminder.save()
+        self.assertEqual(Remainders.objects.count(), 1)
+        self.assertEqual(reminder.habit, self.habit2)
+        self.assertEqual(reminder.reminder_time, time(10, 0))
 
     
 

@@ -1,7 +1,7 @@
 from django.test import TestCase
-from habits.models import Habit, Goal, CustomUser
+from habits.models import Habit, Goal, CustomUser, Remainders
 from django.urls import reverse
-from datetime import date
+from datetime import date, time
 
 class ViewsTest(TestCase):
     @classmethod
@@ -9,7 +9,7 @@ class ViewsTest(TestCase):
         cls.user = CustomUser.objects.create_user(username='testuser', password='TestPassword')
         cls.habit1 = Habit.objects.create(user=cls.user, name='Reading', frequency='Every day')
         cls.habit2 = Habit.objects.create(user=cls.user, name='Excercise', frequency='Every day')
-        cls.goal1 = Goal.objects.create(habit=cls.habit1, user=cls.user, description='Test goal', target_date='2024-12-31')
+        cls.goal1 = Goal.objects.create(habit=cls.habit1, user=cls.user, description='Test goal', target_date='2025-01-31')
 
     def setUp(self):
         self.client.login(username='testuser', password='TestPassword')
@@ -80,7 +80,15 @@ class ViewsTest(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
-    
+    def test_set_reminder_view(self):
+        user_timezone = 'Europe/Moscow'
+        response = self.client.post(reverse('set-reminder', kwargs={'habit_id': self.habit2.id}), data={'habit': self.habit2.id, 'reminder_time': time(12, 0), 'reminder_frequency': 'monthly', 'timezone': user_timezone})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Remainders.objects.count(), 1)
+        reminder = Remainders.objects.first()
+        self.assertEqual(reminder.habit, self.habit2)
+        self.assertEqual(reminder.reminder_time, time(12, 0))
+        self.assertEqual(reminder.reminder_frequency, 'monthly')
 
        
 
