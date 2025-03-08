@@ -97,16 +97,23 @@ header ul li:last-child {
 }
 .wrapper {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    justify-content: space-between;
+    margin: 30px;
 }
 .perfomance {
     font-size: 60px;
     font-style: italic;
     text-align: left;
     width: 50%;
-    margin: 30px;
+    margin: 50px 0 0 30px;
     line-height: 60px;
+}
+.phone {
+    margin: 0 110px 0 0;
+}
+.phone img {
+    max-width: 70%;
+    height: auto;
 }
 .all_habits, .all_goals, .all_progress {
     display: flex;
@@ -478,6 +485,22 @@ footer {
     footer {
         padding: 10px 0px;
     }
+    .wrapper {
+        flex-direction: column;
+    }
+    .perfomance {
+        font-size: 20px;
+        margin: 0 0 0 0;
+        line-height: 20px;
+        width: 100%;
+    }
+    .phone {
+        margin: 0 10px 0 40px;
+    }
+    .phone img {
+        max-width: 80%;
+        margin: 50px;
+    }
 }  
 @media (min-width: 575px) and (max-width: 767px)  {
     header .logo img {
@@ -495,10 +518,34 @@ footer {
         gap: 15px;
         padding: 15px;
     }
+    .perfomance {
+        font-size: 25px;
+        margin: 30px 0 0 0;
+        line-height: 25px;
+        width: 100%;
+    }
+    .phone {
+        margin: 0 10px 0 90px;
+    }
+    .phone img {
+        max-width: 60%;
+    }
 }
 @media (min-width: 768px) and (max-width: 991px) {
     header ul li:last-child {
         font-size: 30px;
         margin-right: 20px;
+    }
+    .perfomance {
+        font-size: 30px;
+        margin: 50px 0 0 0;
+        line-height: 30px;
+        width: 100%;
+    }
+    .phone {
+        margin: 0 10px 0 90px;
+    }
+    .phone img {
+        max-width: 60%;
     }
 }
