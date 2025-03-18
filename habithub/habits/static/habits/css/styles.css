@@ -7,7 +7,6 @@ html, body {
     color: #444;
     overflow-y: auto;
     max-height: 100vh; 
-    padding-bottom: 40px;
 }
 header {
     display: flex;
@@ -16,7 +15,7 @@ header {
     background-color: #7478E9;
 }
 header .logo img {
-    width: 140px;
+    width: 110px;
     height: auto;
     filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.6));
     padding: 5px 10px 5px 10px;
@@ -43,14 +42,14 @@ header ul {
 header ul li:first-child a {
     font-family: 'CormorantGaramond-LightItalic';
     margin-right: auto; 
-    font-size: 70px;
+    font-size: 3.2em;
     line-height: 50px;
 }
 header ul li:last-child {
     color: aliceblue;
     margin-left: auto;
     margin-right: 100px;
-    font-size: 40px;
+    font-size: 1.7em;
     line-height: 50px;
 }
 .header_second {
@@ -68,7 +67,7 @@ header ul li:last-child {
     list-style: none;
 }
 .header_second ul li {
-    font-size: 30px;
+    font-size: 22px;
 }
 .header_second ul li a {
     color: #444;
@@ -101,18 +100,18 @@ header ul li:last-child {
     margin: 30px;
 }
 .perfomance {
-    font-size: 60px;
+    font-size: 42px;
     font-style: italic;
     text-align: left;
     width: 50%;
     margin: 50px 0 0 30px;
-    line-height: 60px;
+    line-height: 42px;
 }
 .phone {
-    margin: 0 110px 0 0;
+    margin: 0;
 }
 .phone img {
-    max-width: 70%;
+    max-width: 50%;
     height: auto;
 }
 .all_habits, .all_goals, .all_progress {
@@ -150,14 +149,14 @@ p.feedback, p.remainder {
     line-height: 1.6; 
 }
 .all_habits h2, .all_goals h2, .all_progress h2,  .habit_chart h2 {
-    font-size: 2em;
+    font-size: 1.8em;
     font-weight: normal;
     margin-top: 30px;
 }
 .habit_table, .goal_table, .progress_table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1.3em;
+    font-size: 1em;
 }
 .habit_table th, .goal_table th, .progress_table th {
     background-color: #7478E9;
@@ -172,7 +171,7 @@ p.feedback, p.remainder {
     line-height: 1.2em;
 }
 .habit_table td, .goal_table td, .progress_table td {
-    font-size: 0.9em;
+    font-size: 1em;
     padding:  5px;
     border: 1px solid #ddd;
 }
@@ -186,8 +185,8 @@ p.feedback, p.remainder {
     width: 30px; 
 }
 .delete-icon img, .archive-icon img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -257,13 +256,17 @@ h1, h2 {
     margin-top: 30px;
     margin-bottom: 20px;
     text-align: center;
+    font-size: 2em;
+}
+h3 {
+    font-size: 1.6em;
 }
 p {
     margin: 10px 0 10px 0;
 }
 .form_label, label {
     display: inline-block;
-    font-size: 1.3em;
+    font-size: 1.1em;
     margin-left: 6px;
 }
 input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="datetime-local" i],  select, textarea, input {
@@ -275,7 +278,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="dat
     margin: 5px;
     border: 1px solid #ccc; 
     border-radius: 4px; 
-    font-size: 1.1em; 
+    font-size: 1em; 
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
 }
 button[type="submit"] {
@@ -303,7 +306,7 @@ button.logout-button {
     cursor: pointer;
 } 
 .change_password a, .set_reminder a {
-    font-size: 1.3em;
+    font-size: 1em;
     color: #444;
     margin-left: 6px;
 }
@@ -334,7 +337,7 @@ button.logout-button {
 }
 .filter-buttons a {
     padding-left: 10px;
-    font-size: 1.3em;
+    font-size: 1em;
     color: #444;
     float: right;
     text-decoration: none;
@@ -373,7 +376,7 @@ footer {
 .footer_bottom {
     display: flex;
     justify-content: center;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 @font-face {
@@ -443,7 +446,7 @@ footer {
         font-size: 0.9em;
     }
     .habit_table td, .goal_table td, .progress_table td {
-        font-size: 0.9em;
+        font-size: 0.8em;
         padding: 3px;
     }
     .button_add_habit, .button_add_goal {
@@ -506,17 +509,21 @@ footer {
     header .logo img {
         width: 100px;
     }
+    header ul {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
     header ul li:first-child a {
-        font-size: 50px;
-        line-height: 60px;
+        font-size: 40px;
+        line-height: 50px;
     }
     header ul li:last-child {
-        font-size: 30px;
+        font-size: 20px;
         margin-right: 30px;
     }
     .header_second ul {
-        gap: 15px;
-        padding: 15px;
+        gap: 20px;
+        padding: 5px;
     }
     .perfomance {
         font-size: 25px;
@@ -528,7 +535,7 @@ footer {
         margin: 0 10px 0 90px;
     }
     .phone img {
-        max-width: 60%;
+        max-width: 50%;
     }
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -546,6 +553,9 @@ footer {
         margin: 0 10px 0 90px;
     }
     .phone img {
-        max-width: 60%;
+        max-width: 50%;
     }
 }
+/* @media (min-width: 992px) and (max-width: 1200px) {
+    
+} */

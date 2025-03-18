@@ -5,20 +5,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - .env
+      - ./habithub/.env
 
-  web:
-    image: habits_docker:latest
-    container_name: web_django
+  habithub:
+    image: habithub:latest
+    container_name: web_django_habithub
     depends_on:
       - db
       - redis
       - celery
     volumes:
       - .:/app
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
     env_file:
-      - .env
+      - ./habithub/.env
     command: >
       bash -c "python manage.py collectstatic --noinput && gunicorn -b 0.0.0.0:8080 habithub.wsgi:application"
     ports:
@@ -26,28 +26,27 @@ services:
 
   redis:
     image: "redis:alpine"
+    container_name: redis_habits
+    volumes:
+      - redis_data:/data
 
   celery:
     build: .
     container_name: celery-worker
     command: celery -A habithub worker --loglevel=info
-    volumes:
-      - .:/app
     depends_on:
       - redis
     env_file:
-      - .env
+      - ./habithub/.env
 
   celery_beat:
     build: .
     container_name: celery-beat
-    command: celery -A habithub beat --loglevel=info
-    volumes:
-      - .:/app
+    command: bash -c "python manage.py migrate django_celery_beat && celery -A habithub beat --loglevel=info"
     depends_on:
       - redis
     env_file:
-      - .env
+      - ./habithub/.env
       
   nginx:
     build:
@@ -55,15 +54,15 @@ services:
       context: ./docker/nginx
     container_name: habithub_nginx
     volumes:
-      - .:/app
-      - static_volume:/app/static
+      - static_volume:/app/staticfiles
     depends_on:
-      - web
+      - habithub
     ports:
-      - "${NGINX_EXTERNAL_PORT}:80"
+      - "8081:80"
 
 volumes:
   postgres_data:
   static_volume:
+  redis_data:
 
 
