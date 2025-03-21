@@ -22,4 +22,23 @@ This app will help users track their habits and achievements. HabitHub makes it 
    https://github.com/AKamysheva/HabitHub
    cd habithub
    ```
+
+2. Create a .env file
+3. Build and Start the Containers:
+   ```
+   docker build -t habithub .
+   docker-compose up -d
+   ```
+.env File Example
+```
+SECRET_KEY=mysecretkey
+DEBUG=False
+POSTGRES_DB=mydatabase
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+EMAIL_HOST_USER=apiemail
+EMAIL_HOST_PASSWORD=passwordemail
+```
    
