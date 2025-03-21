@@ -12,6 +12,8 @@ from plotly.offline import plot
 from django.core.cache import cache
 from .tasks import add_task_to_celery_beat
 from django_celery_beat.models import PeriodicTask
+from django.conf import settings
+import os
 
 class HomePageView(DataMixin, TemplateView):
     template_name = 'habits/index.html'
@@ -64,10 +66,11 @@ class AddHabit(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        lst_habits = get_lst_habits('C:/Python/Django/my_second_site/habithub/habits/static/habits/documents/lst_habits.csv')
-        lst_frequancy = ['Ежедневно', '1 раз в неделю', 'Несколько раз в неделю', 'Несколько раз в месяц']
+        file_path = os.path.join(settings.BASE_DIR, 'habits', 'static', 'habits', 'documents', 'lst_habits.csv')
+        lst_habits = get_lst_habits(file_path)
+        lst_frequency = ['Ежедневно', '1 раз в неделю', 'Несколько раз в неделю', 'Несколько раз в месяц']
         context['lst_habits'] = lst_habits
-        context['lst_frequancy'] = lst_frequancy
+        context['lst_frequency'] = lst_frequency
         return self.get_mixin_context(context, title='Добавление привычки')
     
     def form_valid(self, form):

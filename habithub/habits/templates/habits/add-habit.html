@@ -22,7 +22,7 @@
 
             <select aria-label="Частота выполнения" id="frequency-choice" name="frequency_choice"> 
                 <option value="">Выберите частоту выполнения</option> 
-                {% for v in lst_frequancy %} 
+                {% for v in lst_frequency %} 
                 <option value="{{ v }}" {% if v == form.frequency.value %}selected{% endif %}>{{ v }}</option> 
                 {% endfor %} 
                 <option value="other" {% if form.frequency.value not in lst_frequency and form.frequency.value %}selected{% endif %}>Другое (введите ниже)</option> 
